@@ -44,5 +44,6 @@
         <attr name="picker_displayMinutes" format="boolean"/>
         <attr name="picker_displayHours" format="boolean"/>
         <attr name="picker_displayMonthNumbers" format="boolean" />
+        <attr name="picker_amPmFormat" format="boolean" />
     </declare-styleable>
 </resources>

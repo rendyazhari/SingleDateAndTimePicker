@@ -36,7 +36,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:wheel_atmospheric="true"
-            app:wheel_item_align="right" />
+            app:wheel_item_align="center" />
 
         <com.github.florent37.singledateandtimepicker.widget.WheelYearPicker
             android:id="@+id/yearPicker"

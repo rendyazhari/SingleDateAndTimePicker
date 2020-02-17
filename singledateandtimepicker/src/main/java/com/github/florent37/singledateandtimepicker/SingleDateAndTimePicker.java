@@ -98,6 +98,7 @@ public class SingleDateAndTimePicker extends LinearLayout {
 
         defaultDate = new Date();
         isAmPm = !(DateFormat.is24HourFormat(context));
+        DateHelper.setTimeZone(Calendar.getInstance().getTimeZone());
 
         inflate(context, R.layout.single_day_picker, this);
 
@@ -479,7 +480,7 @@ public class SingleDateAndTimePicker extends LinearLayout {
             calendar.setTimeZone(DateHelper.getTimeZone());
             calendar.setTime(date);
             this.defaultDate = calendar.getTime();
-            
+
             updateDaysOfMonth();
 
             for (WheelPicker picker : pickers) {
@@ -572,6 +573,7 @@ public class SingleDateAndTimePicker extends LinearLayout {
         setMustBeOnFuture(a.getBoolean(R.styleable.SingleDateAndTimePicker_picker_mustBeOnFuture, MUST_BE_ON_FUTUR_DEFAULT));
         setVisibleItemCount(a.getInt(R.styleable.SingleDateAndTimePicker_picker_visibleItemCount, VISIBLE_ITEM_COUNT_DEFAULT));
 
+        setIsAmPm(a.getBoolean(R.styleable.SingleDateAndTimePicker_picker_amPmFormat, isAmPm));
         setDisplayDays(a.getBoolean(R.styleable.SingleDateAndTimePicker_picker_displayDays, displayDays));
         setDisplayMinutes(a.getBoolean(R.styleable.SingleDateAndTimePicker_picker_displayMinutes, displayMinutes));
         setDisplayHours(a.getBoolean(R.styleable.SingleDateAndTimePicker_picker_displayHours, displayHours));
