@@ -544,15 +544,15 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
                     .setMustBeOnFuture(mustBeOnFuture);
 
             if (mainColor != null) {
-                dialog.setMainColor(mainColor);
+                dialog.mainColor = mainColor;
             }
 
             if (backgroundColor != null) {
-                dialog.setBackgroundColor(backgroundColor);
+                dialog.backgroundColor = backgroundColor;
             }
 
             if (titleTextColor != null) {
-                dialog.setTitleTextColor(titleTextColor);
+                dialog.titleTextSize = titleTextColor;
             }
 
             if (displayListener != null) {

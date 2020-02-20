@@ -149,13 +149,18 @@ class SingleDatePickerMainActivityWithDoublePicker : AppCompatActivity() {
                 .title("Double")
                 .tab0Text("Depart")
                 .tab1Text("Return")
-                .listener { dates ->
-                    val stringBuilder = StringBuilder()
-                    for (date in dates) {
-                        stringBuilder.append(simpleDateFormat!!.format(date)).append("\n")
+                .listener(object : DoubleDateAndTimePickerDialog.Listener {
+                    override fun onDateSelected(dates: List<Date?>?) {
+                        val dateList = dates ?: return
+                        val stringBuilder = StringBuilder()
+                        for (date in dateList) {
+                            stringBuilder.append(simpleDateFormat?.format(date)).append("\n")
+                        }
+                        doubleText?.text = stringBuilder.toString()
+
                     }
-                    doubleText!!.text = stringBuilder.toString()
-                }
+
+                })
         doubleBuilder?.display()
     }
 

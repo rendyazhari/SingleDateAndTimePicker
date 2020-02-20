@@ -35,7 +35,8 @@ class BottomSheetHelper {
             if (context is Activity) {
                 windowManager = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
-                view = LayoutInflater.from(context).inflate(layoutId, null, true);
+                view = LayoutInflater.from(context).inflate(layoutId, null, true)
+                val layoutView = view ?: return@postDelayed
 
                 var layoutParams = WindowManager.LayoutParams(
                         // Shrink the window to wrap the content rather than filling the screen
@@ -53,16 +54,16 @@ class BottomSheetHelper {
                     layoutParams = nl
                 }
 
-                windowManager?.addView(view, layoutParams);
+                windowManager?.addView(layoutView, layoutParams);
 
-                view?.findViewById<FrameLayout>(R.id.bottom_sheet_background)?.setOnClickListener {
+                layoutView.findViewById<FrameLayout>(R.id.bottom_sheet_background)?.setOnClickListener {
                     hide()
                 }
 
-                view?.viewTreeObserver?.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+                layoutView.viewTreeObserver?.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
                     override fun onPreDraw(): Boolean {
-                        view?.viewTreeObserver?.removeOnPreDrawListener(this)
-                        listener?.onLoaded(view)
+                        layoutView.viewTreeObserver?.removeOnPreDrawListener(this)
+                        listener?.onLoaded(layoutView)
                         animateBottomSheet()
                         return false
                     }
@@ -115,7 +116,7 @@ class BottomSheetHelper {
 
     interface Listener {
         fun onOpen()
-        fun onLoaded(view: View?)
+        fun onLoaded(view: View)
         fun onClose()
     }
 }

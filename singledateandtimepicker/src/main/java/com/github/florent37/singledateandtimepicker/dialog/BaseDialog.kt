@@ -10,7 +10,7 @@ import java.util.*
  * Created by nor on 1/2/2017.
  */
 abstract class BaseDialog {
-    var isDisplaying = false
+    private var isDisplaying = false
         private set
 
     @JvmField
@@ -86,18 +86,6 @@ abstract class BaseDialog {
 
     open fun dismiss() {
         isDisplaying = false
-    }
-
-    fun setBackgroundColor(@ColorInt backgroundColor: Int?) {
-        this.backgroundColor = backgroundColor
-    }
-
-    fun setMainColor(@ColorInt mainColor: Int?) {
-        this.mainColor = mainColor
-    }
-
-    fun setTitleTextColor(@ColorInt titleTextColor: Int) {
-        this.titleTextColor = titleTextColor
     }
 
     protected open fun onClose() {
