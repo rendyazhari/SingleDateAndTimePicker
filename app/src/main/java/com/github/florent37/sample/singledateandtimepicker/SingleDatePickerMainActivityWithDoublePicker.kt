@@ -6,6 +6,7 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
 import com.github.florent37.singledateandtimepicker.dialog.DoubleDateAndTimePickerDialog
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import java.text.SimpleDateFormat
@@ -46,8 +47,8 @@ class SingleDatePickerMainActivityWithDoublePicker : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (singleBuilder != null) singleBuilder!!.dismiss()
-        if (doubleBuilder != null) doubleBuilder!!.dismiss()
+        singleBuilder?.dismiss()
+        doubleBuilder?.dismiss()
     }
 
     @OnClick(R.id.singleTimeText)
@@ -67,9 +68,19 @@ class SingleDatePickerMainActivityWithDoublePicker : AppCompatActivity() {
                 .displayHours(true)
                 .displayDays(true) //.displayMonth(true)
 //.displayYears(true)
-                .displayListener { }
+                .displayListener(object : SingleDateAndTimePickerDialog.DisplayListener {
+                    override fun onDisplayed(picker: SingleDateAndTimePicker?) {
+
+                    }
+
+                })
                 .title("Simple Time")
-                .listener { date -> singleTimeText!!.text = simpleTimeFormat!!.format(date) }
+                .listener(object : SingleDateAndTimePickerDialog.Listener {
+                    override fun onDateSelected(date: Date?) {
+                        singleTimeText?.text = simpleTimeFormat?.format(date)
+                    }
+
+                })
         singleBuilder?.display()
     }
 
@@ -86,9 +97,19 @@ class SingleDatePickerMainActivityWithDoublePicker : AppCompatActivity() {
                 .displayHours(false)
                 .displayMinutes(false)
                 .displayDays(true)
-                .displayListener { }
+                .displayListener(object : SingleDateAndTimePickerDialog.DisplayListener {
+                    override fun onDisplayed(picker: SingleDateAndTimePicker?) {
+
+                    }
+
+                })
                 .title("")
-                .listener { date -> singleDateText!!.text = simpleDateOnlyFormat!!.format(date) }
+                .listener(object : SingleDateAndTimePickerDialog.Listener {
+                    override fun onDateSelected(date: Date?) {
+                        singleDateText?.text = simpleDateOnlyFormat?.format(date)
+                    }
+
+                })
         singleBuilder?.display()
     }
 
@@ -119,9 +140,18 @@ class SingleDatePickerMainActivityWithDoublePicker : AppCompatActivity() {
 //.defaultDate(defaultDate)
 // .minDateRange(minDate)
 // .maxDateRange(maxDate)
-                .displayListener { }
+                .displayListener(object : SingleDateAndTimePickerDialog.DisplayListener {
+                    override fun onDisplayed(picker: SingleDateAndTimePicker?) {
+
+                    }
+                })
                 .title("Simple")
-                .listener { date -> singleText!!.text = simpleDateFormat!!.format(date) }
+                .listener(object : SingleDateAndTimePickerDialog.Listener {
+                    override fun onDateSelected(date: Date?) {
+                        singleText?.text = simpleDateFormat?.format(date)
+                    }
+
+                })
         singleBuilder?.display()
     }
 
@@ -150,10 +180,9 @@ class SingleDatePickerMainActivityWithDoublePicker : AppCompatActivity() {
                 .tab0Text("Depart")
                 .tab1Text("Return")
                 .listener(object : DoubleDateAndTimePickerDialog.Listener {
-                    override fun onDateSelected(dates: List<Date?>?) {
-                        val dateList = dates ?: return
+                    override fun onDateSelected(dates: List<Date>) {
                         val stringBuilder = StringBuilder()
-                        for (date in dateList) {
+                        for (date in dates) {
                             stringBuilder.append(simpleDateFormat?.format(date)).append("\n")
                         }
                         doubleText?.text = stringBuilder.toString()
@@ -173,9 +202,18 @@ class SingleDatePickerMainActivityWithDoublePicker : AppCompatActivity() {
                 .displayHours(false)
                 .displayMinutes(false)
                 .displayDays(true)
-                .displayListener { }
+                .displayListener(object : SingleDateAndTimePickerDialog.DisplayListener {
+                    override fun onDisplayed(picker: SingleDateAndTimePicker?) {
+
+                    }
+
+                })
                 .title("")
-                .listener { date -> singleDateLocaleText!!.text = simpleDateLocaleFormat!!.format(date) }
+                .listener(object : SingleDateAndTimePickerDialog.Listener {
+                    override fun onDateSelected(date: Date?) {
+                        singleDateLocaleText?.text = simpleDateLocaleFormat?.format(date)
+                    }
+                })
         singleBuilder?.display()
     }
 }

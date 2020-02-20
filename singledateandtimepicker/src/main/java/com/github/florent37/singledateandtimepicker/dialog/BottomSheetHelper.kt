@@ -84,7 +84,8 @@ class BottomSheetHelper {
 
     fun hide() {
         handler?.postDelayed({
-            val objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0f, view?.height?.toFloat() ?: 0f)
+            val objectAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0f, view?.height?.toFloat()
+                    ?: 0f)
             objectAnimator.addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
                     view?.visibility = View.GONE

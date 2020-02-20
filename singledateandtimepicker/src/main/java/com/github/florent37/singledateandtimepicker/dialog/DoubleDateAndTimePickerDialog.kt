@@ -15,9 +15,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class DoubleDateAndTimePickerDialog : BaseDialog {
+class DoubleDateAndTimePickerDialog(context: Context, bottomSheet: Boolean = false) : BaseDialog() {
     private var listener: Listener? = null
-    private var bottomSheetHelper: BottomSheetHelper? = null
+    private val bottomSheetHelper: BottomSheetHelper
     private var buttonTab0: TextView? = null
     private var buttonTab1: TextView? = null
     private var pickerTab0: SingleDateAndTimePicker? = null
@@ -42,12 +42,10 @@ class DoubleDateAndTimePickerDialog : BaseDialog {
     private var tab1Minutes = false
 
     interface Listener {
-        fun onDateSelected(dates: List<Date?>?)
+        fun onDateSelected(dates: List<Date>)
     }
 
-//    private constructor(context: Context) : this(context, false)
-
-    constructor(context: Context, bottomSheet: Boolean) {
+    init {
         val layout: Int = if (bottomSheet) R.layout.bottom_sheet_double_picker_bottom_sheet
         else R.layout.bottom_sheet_double_picker
         bottomSheetHelper = BottomSheetHelper(context, layout).apply {
@@ -62,16 +60,15 @@ class DoubleDateAndTimePickerDialog : BaseDialog {
                 }
             })
         }
-
     }
 
     private fun initClass(view: View) {
-        buttonTab0 = view.findViewById(R.id.buttonTab0);
-        buttonTab1 = view.findViewById(R.id.buttonTab1);
-        pickerTab0 = view.findViewById(R.id.picker_tab_0);
-        pickerTab1 = view.findViewById(R.id.picker_tab_1);
-        tab0 = view.findViewById(R.id.tab0);
-        tab1 = view.findViewById(R.id.tab1);
+        buttonTab0 = view.findViewById(R.id.buttonTab0)
+        buttonTab1 = view.findViewById(R.id.buttonTab1)
+        pickerTab0 = view.findViewById(R.id.picker_tab_0)
+        pickerTab1 = view.findViewById(R.id.picker_tab_1)
+        tab0 = view.findViewById(R.id.tab0)
+        tab1 = view.findViewById(R.id.tab1)
 
         if (pickerTab0 != null) {
             bottomSheetHeight?.let {
@@ -89,11 +86,11 @@ class DoubleDateAndTimePickerDialog : BaseDialog {
             }
         }
 
-        val titleLayout = view.findViewById<View>(R.id.sheetTitleLayout);
-        val titleTextView = view.findViewById<TextView>(R.id.sheetTitle);
-        if(title != null) {
+        val titleLayout = view.findViewById<View>(R.id.sheetTitleLayout)
+        val titleTextView = view.findViewById<TextView>(R.id.sheetTitle)
+        if (title != null) {
             titleTextView?.run {
-                titleTextView.text = title;
+                titleTextView.text = title
                 titleTextColor?.let { color -> setTextColor(color) }
                 titleTextSize?.let { size -> textSize = size.toFloat() }
             }
@@ -101,8 +98,7 @@ class DoubleDateAndTimePickerDialog : BaseDialog {
             mainColor?.let {
                 titleLayout?.setBackgroundColor(it)
             }
-        }
-        else {
+        } else {
             titleLayout.visibility = View.GONE
         }
 
@@ -111,14 +107,14 @@ class DoubleDateAndTimePickerDialog : BaseDialog {
 
         val sheetContentLayout = view.findViewById<View>(R.id.sheetContentLayout)
         sheetContentLayout?.run {
-            setOnClickListener {  }
+            setOnClickListener { }
             backgroundColor?.let { setBackgroundColor(it) }
         }
 
         tab1?.let { tab ->
             tab.viewTreeObserver?.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
-                    tab.viewTreeObserver.removeOnPreDrawListener(this);
+                    tab.viewTreeObserver.removeOnPreDrawListener(this)
                     tab.translationX = tab.width.toFloat()
                     return false
                 }
@@ -136,9 +132,9 @@ class DoubleDateAndTimePickerDialog : BaseDialog {
         buttonTab1?.setOnClickListener { displayTab1() }
 
         //noinspection deprecation
-        buttonTab0?.setBackgroundDrawable(getTabsListDrawable());
+        buttonTab0?.setBackgroundDrawable(getTabsListDrawable())
         //noinspection deprecation
-        buttonTab1?.setBackgroundDrawable(getTabsListDrawable());
+        buttonTab1?.setBackgroundDrawable(getTabsListDrawable())
 
         view.findViewById<TextView>(R.id.buttonOk)?.run {
             text = buttonOkText.orEmpty()
@@ -147,35 +143,35 @@ class DoubleDateAndTimePickerDialog : BaseDialog {
 
             setOnClickListener {
                 if (isTab0Visible()) {
-                    displayTab1();
+                    displayTab1()
                 } else {
-                    okClicked = true;
-                    close();
+                    okClicked = true
+                    close()
                 }
             }
         }
 
-        pickerTab0?.setCurved(curved);
-        pickerTab1?.setCurved(curved);
+        pickerTab0?.setCurved(curved)
+        pickerTab1?.setCurved(curved)
         pickerTab0?.setVisibleItemCount(if (curved) DEFAULT_ITEM_COUNT_MODE_CURVED else DEFAULT_ITEM_COUNT_MODE_NORMAL)
         pickerTab1?.setVisibleItemCount(if (curved) DEFAULT_ITEM_COUNT_MODE_CURVED else DEFAULT_ITEM_COUNT_MODE_NORMAL)
 
-        pickerTab0?.setDisplayDays(tab0Days);
-        pickerTab0?.setDisplayHours(tab0Hours);
-        pickerTab0?.setDisplayMinutes(tab0Minutes);
-        pickerTab1?.setDisplayDays(tab1Days);
-        pickerTab1?.setDisplayHours(tab1Hours);
-        pickerTab1?.setDisplayMinutes(tab1Minutes);
+        pickerTab0?.setDisplayDays(tab0Days)
+        pickerTab0?.setDisplayHours(tab0Hours)
+        pickerTab0?.setDisplayMinutes(tab0Minutes)
+        pickerTab1?.setDisplayDays(tab1Days)
+        pickerTab1?.setDisplayHours(tab1Hours)
+        pickerTab1?.setDisplayMinutes(tab1Minutes)
 
-        pickerTab0?.setMustBeOnFuture(mustBeOnFuture);
-        pickerTab1?.setMustBeOnFuture(mustBeOnFuture);
+        pickerTab0?.setMustBeOnFuture(mustBeOnFuture)
+        pickerTab1?.setMustBeOnFuture(mustBeOnFuture)
 
-        pickerTab0?.setStepMinutes(minutesStep);
-        pickerTab1?.setStepMinutes(minutesStep);
+        pickerTab0?.setStepMinutes(minutesStep)
+        pickerTab1?.setStepMinutes(minutesStep)
 
         mainColor?.let {
-            pickerTab0?.setSelectedTextColor(it);
-            pickerTab1?.setSelectedTextColor(it);
+            pickerTab0?.setSelectedTextColor(it)
+            pickerTab1?.setSelectedTextColor(it)
         }
 
         minDate?.let {
@@ -201,7 +197,7 @@ class DoubleDateAndTimePickerDialog : BaseDialog {
 
         tab1Date?.let {
             val calendar = Calendar.getInstance().apply { time = it }
-            pickerTab1?.selectDate(calendar);
+            pickerTab1?.selectDate(calendar)
         }
 
         dayFormatter?.let {
@@ -210,7 +206,7 @@ class DoubleDateAndTimePickerDialog : BaseDialog {
         }
 
         customLocale?.let {
-            pickerTab0?.setCustomLocale(it);
+            pickerTab0?.setCustomLocale(it)
             pickerTab1?.setCustomLocale(it)
         }
 
@@ -218,8 +214,8 @@ class DoubleDateAndTimePickerDialog : BaseDialog {
             val pickerTab = pickerTab0
             pickerTab?.addOnDateChangedListener(object : SingleDateAndTimePicker.OnDateChangedListener {
                 override fun onDateChanged(displayed: String?, date: Date?) {
-                    pickerTab.setMinDate(date);
-                    pickerTab.checkPickersMinMax();
+                    pickerTab.setMinDate(date)
+                    pickerTab.checkPickersMinMax()
                 }
             })
         }
@@ -359,23 +355,26 @@ class DoubleDateAndTimePickerDialog : BaseDialog {
 
     override fun display() {
         super.display()
-        bottomSheetHelper?.display()
+        bottomSheetHelper.display()
     }
 
     override fun dismiss() {
         super.dismiss()
-        bottomSheetHelper?.dismiss()
+        bottomSheetHelper.dismiss()
     }
 
     override fun close() {
         super.close()
-        bottomSheetHelper?.hide()
+        bottomSheetHelper.hide()
     }
 
     override fun onClose() {
         super.onClose()
         if (okClicked) {
-            listener?.onDateSelected(listOf(pickerTab0?.date, pickerTab1?.date))
+            val pickerDate0 = pickerTab0?.date ?: return
+            val pickerDate1 = pickerTab1?.date ?: return
+
+            listener?.onDateSelected(listOf(pickerDate0, pickerDate1))
         }
     }
 
@@ -402,7 +401,7 @@ class DoubleDateAndTimePickerDialog : BaseDialog {
     private fun isTab0Visible(): Boolean = tab0?.translationX == 0f
 
     class Builder(private val context: Context) {
-        
+
         private var listener: Listener? = null
         private var bottomSheet = false
         private var dialog: DoubleDateAndTimePickerDialog? = null
@@ -420,23 +419,23 @@ class DoubleDateAndTimePickerDialog : BaseDialog {
         private var dayFormatter: SimpleDateFormat? = null
         private var customLocale: Locale? = null
         @ColorInt
-        
+
         private var backgroundColor: Int? = null
         @ColorInt
-        
+
         private var mainColor: Int? = null
         @ColorInt
-        
+
         private var titleTextColor: Int? = null
-        
+
         private var minDate: Date? = null
-        
+
         private var maxDate: Date? = null
-        
+
         private var defaultDate: Date? = null
-        
+
         private var tab0Date: Date? = null
-        
+
         private var tab1Date: Date? = null
         private var tab0Days = true
         private var tab0Hours = true
