@@ -9,24 +9,20 @@ import java.util.*
 class WheelAmPmPicker : WheelPicker<String?> {
     private var amPmListener: AmPmListener? = null
 
-    constructor(context: Context?) : super(context) {}
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {}
+    constructor(context: Context?) : super(context)
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
-    override fun init() {}
-    override fun initDefault(): String {
-        return if (DateHelper.getHour(DateHelper.today(), true) >= SingleDateAndTimeConstants.MAX_HOUR_AM_PM) {
-            getLocalizedString(R.string.picker_pm)
-        } else {
-            getLocalizedString(R.string.picker_am)
-        }
-    }
-
-    override fun generateAdapterValues(): List<String> {
-        return Arrays.asList(
-                getLocalizedString(R.string.picker_am),
+    override fun initClass() {}
+    override fun initDefault(): String =
+            if (DateHelper.getHour(DateHelper.today(), true) >= SingleDateAndTimeConstants.MAX_HOUR_AM_PM) {
                 getLocalizedString(R.string.picker_pm)
-        )
-    }
+            } else {
+                getLocalizedString(R.string.picker_am)
+            }
+
+    override fun generateAdapterValues(): List<String> = listOf(
+            getLocalizedString(R.string.picker_am),
+            getLocalizedString(R.string.picker_pm))
 
     override fun findIndexOfDate(date: Date): Int {
         val calendar = Calendar.getInstance()
@@ -46,18 +42,14 @@ class WheelAmPmPicker : WheelPicker<String?> {
 
     override fun onItemSelected(position: Int, item: String?) {
         super.onItemSelected(position, item)
-        if (amPmListener != null) {
-            amPmListener!!.onAmPmChanged(this, isAm)
-        }
+        amPmListener?.run { onAmPmChanged(this@WheelAmPmPicker, isAm) }
     }
 
     override fun setCyclic(isCyclic: Boolean) {
         super.setCyclic(false)
     }
 
-    fun isAmPosition(position: Int): Boolean {
-        return position == INDEX_AM
-    }
+    fun isAmPosition(position: Int): Boolean = position == INDEX_AM
 
     override fun getFormattedValue(value: Any): String {
         if (value is Date) {

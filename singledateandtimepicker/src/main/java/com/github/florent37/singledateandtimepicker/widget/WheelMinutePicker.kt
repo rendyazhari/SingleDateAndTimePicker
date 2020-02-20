@@ -13,7 +13,7 @@ class WheelMinutePicker : WheelPicker<String?> {
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
-    override fun init() {
+    override fun initClass() {
         stepMinutes = SingleDateAndTimeConstants.STEP_MINUTES_DEFAULT
     }
 
@@ -70,9 +70,7 @@ class WheelMinutePicker : WheelPicker<String?> {
         }
     }
 
-    private fun convertItemToMinute(item: Any): Int {
-        return Integer.valueOf(item.toString())
-    }
+    private fun convertItemToMinute(item: Any): Int = Integer.valueOf(item.toString())
 
     val currentMinute: Int
         get() = adapter.getItem(currentItemPosition)?.let { convertItemToMinute(it) } ?: 0

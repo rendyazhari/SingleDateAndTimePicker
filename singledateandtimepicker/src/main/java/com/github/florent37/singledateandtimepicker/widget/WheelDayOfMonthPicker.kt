@@ -9,7 +9,7 @@ class WheelDayOfMonthPicker @JvmOverloads constructor(context: Context?, attrs: 
     var daysInMonth = 0
     private var selectedListener: DayOfMonthSelectedListener? = null
     private var finishedLoopListener: FinishedLoopListener? = null
-    override fun init() { // no-op here
+    override fun initClass() { // no-op here
     }
 
     override fun generateAdapterValues(): List<String> {
@@ -20,9 +20,7 @@ class WheelDayOfMonthPicker @JvmOverloads constructor(context: Context?, attrs: 
         return dayList
     }
 
-    override fun initDefault(): String {
-        return DateHelper.getDay(DateHelper.today()).toString()
-    }
+    override fun initDefault(): String =  DateHelper.getDay(DateHelper.today()).toString()
 
     fun setOnFinishedLoopListener(finishedLoopListener: FinishedLoopListener?) {
         this.finishedLoopListener = finishedLoopListener
@@ -30,9 +28,7 @@ class WheelDayOfMonthPicker @JvmOverloads constructor(context: Context?, attrs: 
 
     override fun onFinishedLoop() {
         super.onFinishedLoop()
-        if (finishedLoopListener != null) {
-            finishedLoopListener!!.onFinishedLoop(this)
-        }
+        finishedLoopListener?.onFinishedLoop(this)
     }
 
     fun setDayOfMonthSelectedListener(listener: DayOfMonthSelectedListener) {

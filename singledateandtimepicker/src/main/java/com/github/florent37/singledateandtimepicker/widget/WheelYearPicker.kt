@@ -17,7 +17,7 @@ class WheelYearPicker : WheelPicker<String?> {
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
-    override fun init() {
+    override fun initClass() {
         simpleDateFormat = SimpleDateFormat("yyyy", currentLocale)
         val instance = Calendar.getInstance()
         instance.timeZone = DateHelper.timeZone
@@ -69,9 +69,7 @@ class WheelYearPicker : WheelPicker<String?> {
     val currentYear: Int
         get() = convertItemToYear(super.getCurrentItemPosition())
 
-    private fun convertItemToYear(itemPosition: Int): Int {
-        return minYear + itemPosition
-    }
+    private fun convertItemToYear(itemPosition: Int): Int = minYear + itemPosition
 
     interface OnYearSelectedListener {
         fun onYearSelected(picker: WheelYearPicker?, position: Int, year: Int)

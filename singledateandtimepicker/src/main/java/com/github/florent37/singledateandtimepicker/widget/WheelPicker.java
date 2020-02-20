@@ -176,14 +176,14 @@ public abstract class WheelPicker<V> extends View {
             touchSlop = conf.getScaledTouchSlop();
         }
 
-        init();
+        initClass();
         defaultValue = initDefault();
         adapter.setData(generateAdapterValues());
         currentItemPosition = adapter.getItemPosition(defaultValue);
         selectedItemPosition = currentItemPosition;
     }
 
-    protected abstract void init();
+    protected abstract void initClass();
 
     protected abstract V initDefault();
 

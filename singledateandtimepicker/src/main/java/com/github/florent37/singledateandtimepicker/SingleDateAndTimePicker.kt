@@ -238,9 +238,7 @@ class SingleDateAndTimePicker @JvmOverloads constructor(context: Context, attrs:
         hoursPicker.setIsAmPm(isAmPm)
     }
 
-    fun isAmPm(): Boolean {
-        return isAmPm
-    }
+    fun isAmPm(): Boolean = isAmPm
 
     fun setDayFormatter(simpleDateFormat: SimpleDateFormat?) {
         if (simpleDateFormat != null) {
@@ -248,9 +246,7 @@ class SingleDateAndTimePicker @JvmOverloads constructor(context: Context, attrs:
         }
     }
 
-    fun getMinDate(): Date? {
-        return minDate
-    }
+    fun getMinDate(): Date? = minDate
 
     fun setMinDate(minDate: Date?) {
         val calendar = Calendar.getInstance()
@@ -260,9 +256,7 @@ class SingleDateAndTimePicker @JvmOverloads constructor(context: Context, attrs:
         setMinYear()
     }
 
-    fun getMaxDate(): Date? {
-        return maxDate
-    }
+    fun getMaxDate(): Date? = maxDate
 
     fun setMaxDate(maxDate: Date?) {
         val calendar = Calendar.getInstance()
@@ -304,13 +298,11 @@ class SingleDateAndTimePicker @JvmOverloads constructor(context: Context, attrs:
         }, DELAY_BEFORE_CHECK_PAST.toLong())
     }
 
-    private fun isBeforeMinDate(date: Date): Boolean {
-        return DateHelper.getCalendarOfDate(date).before(DateHelper.getCalendarOfDate(minDate))
-    }
+    private fun isBeforeMinDate(date: Date): Boolean =
+            DateHelper.getCalendarOfDate(date).before(DateHelper.getCalendarOfDate(minDate))
 
-    private fun isAfterMaxDate(date: Date): Boolean {
-        return DateHelper.getCalendarOfDate(date).after(DateHelper.getCalendarOfDate(maxDate))
-    }
+    private fun isAfterMaxDate(date: Date): Boolean =
+            DateHelper.getCalendarOfDate(date).after(DateHelper.getCalendarOfDate(maxDate))
 
     fun addOnDateChangedListener(listener: OnDateChangedListener) {
         listeners.add(listener)
@@ -444,7 +436,7 @@ class SingleDateAndTimePicker @JvmOverloads constructor(context: Context, attrs:
         require(!(displayDays && (displayDaysOfMonth || displayMonth))) { "You can either display days with months or days and months separately" }
     }
 
-    private fun init(context: Context, attrs: AttributeSet?) {
+    private fun initClass(context: Context, attrs: AttributeSet?) {
         val a = context.obtainStyledAttributes(attrs, R.styleable.SingleDateAndTimePicker)
         val resources = resources
         setTodayText(a.getString(R.styleable.SingleDateAndTimePicker_picker_todayText))
@@ -502,7 +494,7 @@ class SingleDateAndTimePicker @JvmOverloads constructor(context: Context, attrs:
         hoursPicker = findViewById(R.id.hoursPicker)
         amPmPicker = findViewById(R.id.amPmPicker)
         dtSelector = findViewById(R.id.dtSelector)
-        pickers.addAll(Arrays.asList(
+        pickers.addAll(listOf(
                 daysPicker,
                 minutesPicker,
                 hoursPicker,
@@ -511,6 +503,6 @@ class SingleDateAndTimePicker @JvmOverloads constructor(context: Context, attrs:
                 monthPicker,
                 yearsPicker
         ))
-        init(context, attrs)
+        initClass(context, attrs)
     }
 }

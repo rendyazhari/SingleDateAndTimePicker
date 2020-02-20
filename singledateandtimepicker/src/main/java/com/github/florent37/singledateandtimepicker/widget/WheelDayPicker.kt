@@ -15,9 +15,9 @@ class WheelDayPicker : WheelPicker<String?> {
     private var onDaySelectedListener: OnDaySelectedListener? = null
 
     constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {}
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
-    override fun init() {
+    override fun initClass() {
         simpleDateFormat = SimpleDateFormat(DAY_FORMAT_PATTERN, currentLocale)
         simpleDateFormat?.timeZone = DateHelper.timeZone
     }

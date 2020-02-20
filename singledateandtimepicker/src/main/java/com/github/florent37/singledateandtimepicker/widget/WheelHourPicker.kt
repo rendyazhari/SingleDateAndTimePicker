@@ -14,19 +14,17 @@ class WheelHourPicker : WheelPicker<String?> {
     private var finishedLoopListener: FinishedLoopListener? = null
     private var hourChangedListener: OnHourChangedListener? = null
 
-    constructor(context: Context?) : super(context) {}
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {}
+    constructor(context: Context?) : super(context)
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
-    override fun init() {
+    override fun initClass() {
         isAmPm = false
         minHour = SingleDateAndTimeConstants.MIN_HOUR_DEFAULT
         maxHour = SingleDateAndTimeConstants.MAX_HOUR_DEFAULT
         hoursStep = SingleDateAndTimeConstants.STEP_HOURS_DEFAULT
     }
 
-    override fun initDefault(): String {
-        return DateHelper.getHour(DateHelper.today(), isAmPm).toString()
-    }
+    override fun initDefault(): String = DateHelper.getHour(DateHelper.today(), isAmPm).toString()
 
     override fun generateAdapterValues(): List<String> {
         val hours: MutableList<String> = ArrayList()
