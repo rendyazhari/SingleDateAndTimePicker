@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Camera;
 import android.graphics.Canvas;
@@ -272,7 +271,7 @@ public abstract class WheelPicker<V> extends View {
     }
 
     public void setCustomLocale(Locale customLocale) {
-    	this.customLocale = customLocale;
+        this.customLocale = customLocale;
     }
 
     @Override
