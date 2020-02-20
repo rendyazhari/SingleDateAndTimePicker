@@ -5,5 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorInnactive">#AAA</color>
     <color name="textColor">#6E6E6E</color>
+    <color name="transparent">#00000000</color>
 
 </resources>

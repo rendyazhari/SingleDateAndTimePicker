@@ -17,12 +17,41 @@
 
     <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
         android:id="@+id/single_day_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="230dp"
-        app:picker_curved="true"
-        app:picker_cyclic="true"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        app:picker_textSize="14sp"
+        app:picker_selectedTextColor="#03A9F4"
+        app:picker_selectorColor="@color/transparent"
+        app:picker_curved="false"
+        app:picker_cyclic="false"
         app:picker_mustBeOnFuture="true"
-        app:picker_visibleItemCount="7"
+        app:picker_visibleItemCount="3"
+        app:picker_displayDays="false"
+        app:picker_displayDaysOfMonth="true"
+        app:picker_displayMonth="true"
+        app:picker_displayYears="true"
+        app:picker_displayHours="false"
+        app:picker_displayMinutes="false"
+        />
+
+    <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
+        android:id="@+id/single_time_picker"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        app:picker_textSize="14sp"
+        app:picker_selectedTextColor="#03A9F4"
+        app:picker_selectorColor="@color/transparent"
+        app:picker_curved="false"
+        app:picker_cyclic="false"
+        app:picker_mustBeOnFuture="true"
+        app:picker_visibleItemCount="3"
+        app:picker_displayDays="false"
+        app:picker_displayDaysOfMonth="false"
+        app:picker_displayMonth="false"
+        app:picker_displayYears="false"
+        app:picker_amPmFormat="false"
+        app:picker_displayHours="true"
+        app:picker_displayMinutes="true"
         />
 
 </LinearLayout>
