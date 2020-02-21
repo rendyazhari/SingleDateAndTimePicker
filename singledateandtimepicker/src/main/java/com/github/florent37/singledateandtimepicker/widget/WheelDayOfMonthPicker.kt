@@ -5,10 +5,17 @@ import android.util.AttributeSet
 import com.github.florent37.singledateandtimepicker.DateHelper
 import java.util.*
 
-class WheelDayOfMonthPicker @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : WheelPicker<String?>(context, attrs) {
+class WheelDayOfMonthPicker @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null
+) : WheelPicker<String?>(context, attrs) {
     var daysInMonth = 0
     private var selectedListener: DayOfMonthSelectedListener? = null
     private var finishedLoopListener: FinishedLoopListener? = null
+
+    val currentDay: Int
+        get() = currentItemPosition
+
     override fun initClass() { // no-op here
     }
 
@@ -20,7 +27,7 @@ class WheelDayOfMonthPicker @JvmOverloads constructor(context: Context, attrs: A
         return dayList
     }
 
-    override fun initDefault(): String =  DateHelper.getDay(DateHelper.today()).toString()
+    override fun initDefault(): String = DateHelper.getDay(DateHelper.today()).toString()
 
     fun setOnFinishedLoopListener(finishedLoopListener: FinishedLoopListener?) {
         this.finishedLoopListener = finishedLoopListener
@@ -38,9 +45,6 @@ class WheelDayOfMonthPicker @JvmOverloads constructor(context: Context, attrs: A
     override fun onItemSelected(position: Int, item: String?) {
         selectedListener?.onDayOfMonthSelected(this, position)
     }
-
-    val currentDay: Int
-        get() = currentItemPosition
 
     interface FinishedLoopListener {
         fun onFinishedLoop(picker: WheelDayOfMonthPicker?)

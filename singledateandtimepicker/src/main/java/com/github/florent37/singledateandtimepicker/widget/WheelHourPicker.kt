@@ -82,11 +82,10 @@ class WheelHourPicker : WheelPicker<String?> {
 
     fun setIsAmPm(isAmPm: Boolean) {
         this.isAmPm = isAmPm
-        if (isAmPm) {
-            setMaxHour(SingleDateAndTimeConstants.MAX_HOUR_AM_PM)
-        } else {
-            setMaxHour(SingleDateAndTimeConstants.MAX_HOUR_DEFAULT)
-        }
+        setMaxHour(
+            if (isAmPm) SingleDateAndTimeConstants.MAX_HOUR_AM_PM
+            else SingleDateAndTimeConstants.MAX_HOUR_DEFAULT
+        )
         updateAdapter()
     }
 
@@ -113,10 +112,7 @@ class WheelHourPicker : WheelPicker<String?> {
 
     private fun convertItemToHour(item: Any): Int {
         var hour = Integer.valueOf(item.toString())
-        if (!isAmPm) {
-            return hour
-        }
-        if (hour == 12) {
+        if (isAmPm && hour == 12) {
             hour = 0
         }
         return hour
@@ -142,9 +138,7 @@ class WheelHourPicker : WheelPicker<String?> {
 
     override fun onFinishedLoop() {
         super.onFinishedLoop()
-        if (finishedLoopListener != null) {
-            finishedLoopListener?.onFinishedLoop(this)
-        }
+        finishedLoopListener?.onFinishedLoop(this)
     }
 
     interface FinishedLoopListener {

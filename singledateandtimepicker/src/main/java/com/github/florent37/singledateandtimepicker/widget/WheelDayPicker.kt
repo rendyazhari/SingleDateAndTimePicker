@@ -81,9 +81,10 @@ class WheelDayPicker : WheelPicker<String?> {
         get() = convertItemToDate(super.currentItemPosition)
 
     private val dateFormat: SimpleDateFormat?
-        private get() = if (customDateFormat != null) {
-            customDateFormat
-        } else simpleDateFormat
+        get() =
+            if (customDateFormat != null) {
+                customDateFormat
+            } else simpleDateFormat
 
     private fun convertItemToDate(itemPosition: Int): Date? {
         var date: Date? = null

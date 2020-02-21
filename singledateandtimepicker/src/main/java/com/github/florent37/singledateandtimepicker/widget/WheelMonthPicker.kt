@@ -10,7 +10,12 @@ class WheelMonthPicker @JvmOverloads constructor(context: Context, attrs: Attrib
     private var monthLastScrollPosition = 0
     private var selectedListener: MonthSelectedListener? = null
     private var displayMonthNumbers = false
+
+    val currentMonth: Int
+        get() = currentItemPosition
+
     override fun initClass() {}
+
     override fun generateAdapterValues(): List<String> {
         val monthList: MutableList<String> = ArrayList()
         val month_date = SimpleDateFormat("MMMM", currentLocale)
@@ -50,9 +55,6 @@ class WheelMonthPicker @JvmOverloads constructor(context: Context, attrs: Attrib
     fun setDisplayMonthNumbers(displayMonthNumbers: Boolean) {
         this.displayMonthNumbers = displayMonthNumbers
     }
-
-    val currentMonth: Int
-        get() = currentItemPosition
 
     interface MonthSelectedListener {
         fun onMonthSelected(picker: WheelMonthPicker?, monthIndex: Int, monthName: String?)

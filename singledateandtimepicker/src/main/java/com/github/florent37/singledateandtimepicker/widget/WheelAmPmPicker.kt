@@ -9,20 +9,37 @@ import java.util.*
 class WheelAmPmPicker : WheelPicker<String?> {
     private var amPmListener: AmPmListener? = null
 
+    override var isCyclic: Boolean
+        get() = super.isCyclic
+        set(value) {
+            super.isCyclic = false
+        }
+
+    val isAm: Boolean
+        get() = currentItemPosition == INDEX_AM
+
+    val isPm: Boolean
+        get() = currentItemPosition == INDEX_PM
+
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     override fun initClass() {}
     override fun initDefault(): String =
-            if (DateHelper.getHour(DateHelper.today(), true) >= SingleDateAndTimeConstants.MAX_HOUR_AM_PM) {
-                getLocalizedString(R.string.picker_pm)
-            } else {
-                getLocalizedString(R.string.picker_am)
-            }
+        if (DateHelper.getHour(
+                DateHelper.today(),
+                true
+            ) >= SingleDateAndTimeConstants.MAX_HOUR_AM_PM
+        ) {
+            getLocalizedString(R.string.picker_pm)
+        } else {
+            getLocalizedString(R.string.picker_am)
+        }
 
     override fun generateAdapterValues(): List<String> = listOf(
-            getLocalizedString(R.string.picker_am),
-            getLocalizedString(R.string.picker_pm))
+        getLocalizedString(R.string.picker_am),
+        getLocalizedString(R.string.picker_pm)
+    )
 
     override fun findIndexOfDate(date: Date): Int {
         val calendar = Calendar.getInstance()
@@ -45,12 +62,6 @@ class WheelAmPmPicker : WheelPicker<String?> {
         amPmListener?.run { onAmPmChanged(this@WheelAmPmPicker, isAm) }
     }
 
-    override var isCyclic: Boolean
-        get() = super.isCyclic
-        set(value) {
-            super.isCyclic = false
-        }
-
     fun isAmPosition(position: Int): Boolean = position == INDEX_AM
 
     override fun getFormattedValue(value: Any): String {
@@ -62,12 +73,6 @@ class WheelAmPmPicker : WheelPicker<String?> {
         }
         return value.toString()
     }
-
-    val isAm: Boolean
-        get() = currentItemPosition == INDEX_AM
-
-    val isPm: Boolean
-        get() = currentItemPosition == INDEX_PM
 
     interface AmPmListener {
         fun onAmPmChanged(pmPicker: WheelAmPmPicker?, isAm: Boolean)

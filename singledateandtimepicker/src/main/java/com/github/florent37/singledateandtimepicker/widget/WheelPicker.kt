@@ -11,7 +11,6 @@ import android.graphics.Paint.*
 import android.os.Build
 import android.os.Handler
 import android.support.annotation.StringRes
-import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.VelocityTracker
@@ -22,9 +21,7 @@ import com.github.florent37.singledateandtimepicker.DateHelper.timeZone
 import com.github.florent37.singledateandtimepicker.LocaleHelper.getString
 import com.github.florent37.singledateandtimepicker.R
 import java.util.*
-import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
+import kotlin.math.*
 
 
 abstract class WheelPicker<V>(context: Context, attrs: AttributeSet?) : View(context, attrs) {
@@ -139,9 +136,48 @@ abstract class WheelPicker<V>(context: Context, attrs: AttributeSet?) : View(con
                     mainHandler.postDelayed(this, 16)
                 }
             }
-
         }
     }
+
+    var indicatorSize: Int
+        get() = mIndicatorSize
+        set(size) {
+            mIndicatorSize = size
+            computeIndicatorRect()
+            postInvalidate()
+        }
+
+    var indicatorColor: Int
+        get() = mIndicatorColor
+        set(color) {
+            mIndicatorColor = color
+            postInvalidate()
+        }
+
+    var curtainColor: Int
+        get() = mCurtainColor
+        set(color) {
+            mCurtainColor = color
+            postInvalidate()
+        }
+
+    var itemAlign: Int
+        get() = mItemAlign
+        set(align) {
+            mItemAlign = align
+            updateItemTextAlign()
+            computeDrawnCenter()
+            postInvalidate()
+        }
+
+    var typeface: Typeface?
+        get() = paint.typeface
+        set(tf) {
+            paint.typeface = tf
+            computeTextSize()
+            requestLayout()
+            postInvalidate()
+        }
 
     constructor(context: Context) : this(context, null)
 
@@ -222,14 +258,14 @@ abstract class WheelPicker<V>(context: Context, attrs: AttributeSet?) : View(con
             mTextMaxWidth = paint.measureText(adapter.getItemText(0)).toInt()
         } else if (isPosInRang(textMaxWidthPosition)) {
             mTextMaxWidth = paint.measureText(adapter.getItemText(textMaxWidthPosition)).toInt()
-        } else if (!TextUtils.isEmpty(maxWidthText)) {
+        } else if (!maxWidthText.isNullOrEmpty()) {
             mTextMaxWidth = paint.measureText(maxWidthText).toInt()
         } else {
             val itemCount = adapter.itemCount
             for (i in 0 until itemCount) {
                 val text = adapter.getItemText(i)
                 val width = paint.measureText(text).toInt()
-                mTextMaxWidth = Math.max(mTextMaxWidth, width)
+                mTextMaxWidth = max(mTextMaxWidth, width)
             }
         }
         val metrics = paint.fontMetrics
@@ -238,9 +274,9 @@ abstract class WheelPicker<V>(context: Context, attrs: AttributeSet?) : View(con
 
     private fun updateItemTextAlign() {
         when (mItemAlign) {
-            ALIGN_LEFT -> paint.textAlign = Paint.Align.LEFT
-            ALIGN_RIGHT -> paint.textAlign = Paint.Align.RIGHT
-            else -> paint.textAlign = Paint.Align.CENTER
+            ALIGN_LEFT -> paint.textAlign = Align.LEFT
+            ALIGN_RIGHT -> paint.textAlign = Align.RIGHT
+            else -> paint.textAlign = Align.CENTER
         }
     }
 
@@ -450,115 +486,113 @@ abstract class WheelPicker<V>(context: Context, attrs: AttributeSet?) : View(con
         // Need to draw curtain or not
         if (hasCurtain) {
             paint.color = mCurtainColor
-            paint.style = Paint.Style.FILL
+            paint.style = Style.FILL
             canvas.drawRect(rectCurrentItem, paint)
         }
         // Need to draw indicator or not
         if (hasIndicator) {
             paint.color = mIndicatorColor
-            paint.style = Paint.Style.FILL
+            paint.style = Style.FILL
             canvas.drawRect(rectIndicatorHead, paint)
             canvas.drawRect(rectIndicatorFoot, paint)
         }
     }
 
-    private fun isPosInRang(position: Int): Boolean {
-        return position >= 0 && position < adapter.itemCount
-    }
+    private fun isPosInRang(position: Int): Boolean = position >= 0 && position < adapter.itemCount
 
-    private fun computeSpace(degree: Int): Int {
-        return (Math.sin(Math.toRadians(degree.toDouble())) * mHalfWheelHeight).toInt()
-    }
+    private fun computeSpace(degree: Int): Int =
+        (sin(Math.toRadians(degree.toDouble())) * mHalfWheelHeight).toInt()
 
-    private fun computeDepth(degree: Int): Int {
-        return (mHalfWheelHeight - Math.cos(Math.toRadians(degree.toDouble())) * mHalfWheelHeight).toInt()
-    }
+    private fun computeDepth(degree: Int): Int =
+        (mHalfWheelHeight - cos(Math.toRadians(degree.toDouble())) * mHalfWheelHeight).toInt()
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (isEnabled) {
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    if (null != parent) parent.requestDisallowInterceptTouchEvent(true)
-                    if (null == tracker) {
-                        tracker = VelocityTracker.obtain()
-                    } else {
-                        tracker?.clear()
-                    }
-                    tracker?.addMovement(event)
-                    if (!scroller.isFinished) {
-                        scroller.abortAnimation()
-                        isForceFinishScroll = true
-                    }
-                    run {
-                        lastPointY = event.y.toInt()
-                        downPointY = lastPointY
-                    }
+        if (!isEnabled) {
+            return true
+        }
+
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                if (null != parent) parent.requestDisallowInterceptTouchEvent(true)
+                if (null == tracker) {
+                    tracker = VelocityTracker.obtain()
+                } else {
+                    tracker?.clear()
                 }
-                MotionEvent.ACTION_MOVE -> {
-                    if (abs(downPointY - event.y) < touchSlop
-                        && computeDistanceToEndPoint(scroller.finalY % mItemHeight) > 0
-                    ) {
-                        isClick = true
-                        return true
-                    }
-                    isClick = false
-                    tracker?.addMovement(event)
-                    onWheelChangeListener?.onWheelScrollStateChanged(SCROLL_STATE_DRAGGING)
-                    // Scroll WheelPicker's content
-                    val move = event.y - lastPointY
-                    if (Math.abs(move) < 1) return true
-                    scrollOffsetY += move.toInt()
+                tracker?.addMovement(event)
+                if (!scroller.isFinished) {
+                    scroller.abortAnimation()
+                    isForceFinishScroll = true
+                }
+                run {
                     lastPointY = event.y.toInt()
-                    invalidate()
+                    downPointY = lastPointY
                 }
-                MotionEvent.ACTION_UP -> {
-                    if (null != parent) parent.requestDisallowInterceptTouchEvent(false)
-                    if (isClick) return true
-                    tracker?.addMovement(event)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.DONUT) {
-                        tracker?.computeCurrentVelocity(1000, maximumVelocity.toFloat())
-                    } else {
-                        tracker?.computeCurrentVelocity(1000)
-                    }
-                    // Judges the WheelPicker is scroll or fling base on current velocity
-                    isForceFinishScroll = false
-                    val velocity = tracker?.yVelocity?.toInt() ?: 0
-                    if (Math.abs(velocity) > minimumVelocity) {
-                        scroller.fling(0, scrollOffsetY, 0, velocity, 0, 0, minFlingY, maxFlingY)
-                        scroller.finalY =
-                            scroller.finalY + computeDistanceToEndPoint(scroller.finalY % mItemHeight)
-                    } else {
-                        scroller.startScroll(
-                            0, scrollOffsetY, 0,
-                            computeDistanceToEndPoint(scrollOffsetY % mItemHeight)
-                        )
-                    }
-                    // Correct coordinates
-                    if (!isCyclic) {
-                        if (scroller.finalY > maxFlingY) {
-                            scroller.finalY = maxFlingY
-                        } else if (scroller.finalY < minFlingY) scroller.finalY = minFlingY
-                    }
-                    mainHandler.post(runnable)
-                    if (null != tracker) {
-                        tracker?.recycle()
-                        tracker = null
-                    }
+            }
+            MotionEvent.ACTION_MOVE -> {
+                if (abs(downPointY - event.y) < touchSlop
+                    && computeDistanceToEndPoint(scroller.finalY % mItemHeight) > 0
+                ) {
+                    isClick = true
+                    return true
                 }
-                MotionEvent.ACTION_CANCEL -> {
-                    if (null != parent) parent.requestDisallowInterceptTouchEvent(false)
-                    if (null != tracker) {
-                        tracker?.recycle()
-                        tracker = null
-                    }
+                isClick = false
+                tracker?.addMovement(event)
+                onWheelChangeListener?.onWheelScrollStateChanged(SCROLL_STATE_DRAGGING)
+                // Scroll WheelPicker's content
+                val move = event.y - lastPointY
+                if (Math.abs(move) < 1) return true
+                scrollOffsetY += move.toInt()
+                lastPointY = event.y.toInt()
+                invalidate()
+            }
+            MotionEvent.ACTION_UP -> {
+                if (null != parent) parent.requestDisallowInterceptTouchEvent(false)
+                if (isClick) return true
+                tracker?.addMovement(event)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.DONUT) {
+                    tracker?.computeCurrentVelocity(1000, maximumVelocity.toFloat())
+                } else {
+                    tracker?.computeCurrentVelocity(1000)
+                }
+                // Judges the WheelPicker is scroll or fling base on current velocity
+                isForceFinishScroll = false
+                val velocity = tracker?.yVelocity?.toInt() ?: 0
+                if (Math.abs(velocity) > minimumVelocity) {
+                    scroller.fling(0, scrollOffsetY, 0, velocity, 0, 0, minFlingY, maxFlingY)
+                    scroller.finalY =
+                        scroller.finalY + computeDistanceToEndPoint(scroller.finalY % mItemHeight)
+                } else {
+                    scroller.startScroll(
+                        0, scrollOffsetY, 0,
+                        computeDistanceToEndPoint(scrollOffsetY % mItemHeight)
+                    )
+                }
+                // Correct coordinates
+                if (!isCyclic) {
+                    if (scroller.finalY > maxFlingY) {
+                        scroller.finalY = maxFlingY
+                    } else if (scroller.finalY < minFlingY) scroller.finalY = minFlingY
+                }
+                mainHandler.post(runnable)
+                if (null != tracker) {
+                    tracker?.recycle()
+                    tracker = null
+                }
+            }
+            MotionEvent.ACTION_CANCEL -> {
+                if (null != parent) parent.requestDisallowInterceptTouchEvent(false)
+                if (null != tracker) {
+                    tracker?.recycle()
+                    tracker = null
                 }
             }
         }
         return true
     }
 
-    private fun computeDistanceToEndPoint(remainder: Int): Int {
-        return if (abs(remainder) > mHalfItemHeight) {
+    private fun computeDistanceToEndPoint(remainder: Int): Int =
+        if (abs(remainder) > mHalfItemHeight) {
             if (scrollOffsetY < 0) {
                 -mItemHeight - remainder
             } else {
@@ -567,7 +601,6 @@ abstract class WheelPicker<V>(context: Context, attrs: AttributeSet?) : View(con
         } else {
             -remainder
         }
-    }
 
     fun scrollTo(itemPosition: Int) {
         if (itemPosition != currentItemPosition) {
@@ -614,9 +647,7 @@ abstract class WheelPicker<V>(context: Context, attrs: AttributeSet?) : View(con
     }
 
     protected open fun onFinishedLoop() {}
-    protected open fun getFormattedValue(value: Any): String {
-        return value.toString()
-    }
+    protected open fun getFormattedValue(value: Any): String = value.toString()
 
     var visibleItemCount: Int
         get() = mVisibleItemCount
@@ -643,12 +674,6 @@ abstract class WheelPicker<V>(context: Context, attrs: AttributeSet?) : View(con
         requestLayout()
         invalidate()
     }
-
-    val defaultItemPosition: Int
-        get() = adapter.data.indexOf(defaultValue)
-
-    val todayItemPosition: Int
-        get() = (adapter.data as? List<*>)?.indexOf(getLocalizedString(R.string.picker_today)) ?: 0
 
     fun notifyDatasetChanged() {
         if (selectedItemPosition > adapter.itemCount - 1
@@ -678,6 +703,12 @@ abstract class WheelPicker<V>(context: Context, attrs: AttributeSet?) : View(con
     fun setOnWheelChangeListener(listener: OnWheelChangeListener?) {
         onWheelChangeListener = listener
     }
+
+    val defaultItemPosition: Int
+        get() = adapter.data.indexOf(defaultValue)
+
+    val todayItemPosition: Int
+        get() = (adapter.data as? List<*>)?.indexOf(getLocalizedString(R.string.picker_today)) ?: 0
 
     var maximumWidthText: String?
         get() = maxWidthText
@@ -747,21 +778,6 @@ abstract class WheelPicker<V>(context: Context, attrs: AttributeSet?) : View(con
 
     fun hasIndicator(): Boolean = hasIndicator
 
-    var indicatorSize: Int
-        get() = mIndicatorSize
-        set(size) {
-            mIndicatorSize = size
-            computeIndicatorRect()
-            postInvalidate()
-        }
-
-    var indicatorColor: Int
-        get() = mIndicatorColor
-        set(color) {
-            mIndicatorColor = color
-            postInvalidate()
-        }
-
     fun setCurtain(hasCurtain: Boolean) {
         this.hasCurtain = hasCurtain
         computeCurrentItemRect()
@@ -769,13 +785,6 @@ abstract class WheelPicker<V>(context: Context, attrs: AttributeSet?) : View(con
     }
 
     fun hasCurtain(): Boolean = hasCurtain
-
-    var curtainColor: Int
-        get() = mCurtainColor
-        set(color) {
-            mCurtainColor = color
-            postInvalidate()
-        }
 
     fun setAtmospheric(hasAtmospheric: Boolean) {
         this.hasAtmospheric = hasAtmospheric
@@ -785,24 +794,6 @@ abstract class WheelPicker<V>(context: Context, attrs: AttributeSet?) : View(con
     fun hasAtmospheric(): Boolean {
         return hasAtmospheric
     }
-
-    var itemAlign: Int
-        get() = mItemAlign
-        set(align) {
-            mItemAlign = align
-            updateItemTextAlign()
-            computeDrawnCenter()
-            postInvalidate()
-        }
-
-    var typeface: Typeface?
-        get() = paint.typeface
-        set(tf) {
-            paint.typeface = tf
-            computeTextSize()
-            requestLayout()
-            postInvalidate()
-        }
 
     /**
      * TODO: [Adapter.data] could contain 'Data' class objects. 'Data' could be composed of

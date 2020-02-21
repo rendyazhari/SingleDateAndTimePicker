@@ -10,6 +10,9 @@ class WheelMinutePicker : WheelPicker<String?> {
     private var onMinuteChangedListener: OnMinuteChangedListener? = null
     private var onFinishedLoopListener: OnFinishedLoopListener? = null
 
+    val currentMinute: Int
+        get() = adapter.getItem(currentItemPosition)?.let { convertItemToMinute(it) } ?: 0
+
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
@@ -48,9 +51,7 @@ class WheelMinutePicker : WheelPicker<String?> {
         return itemCount - 1
     }
 
-    override fun findIndexOfDate(date: Date): Int {
-        return findIndexOfMinute(DateHelper.getMinuteOf(date))
-    }
+    override fun findIndexOfDate(date: Date): Int = findIndexOfMinute(DateHelper.getMinuteOf(date))
 
     override fun getFormattedValue(value: Any): String {
         var valueItem = value
@@ -71,9 +72,6 @@ class WheelMinutePicker : WheelPicker<String?> {
     }
 
     private fun convertItemToMinute(item: Any): Int = Integer.valueOf(item.toString())
-
-    val currentMinute: Int
-        get() = adapter.getItem(currentItemPosition)?.let { convertItemToMinute(it) } ?: 0
 
     fun setOnMinuteChangedListener(onMinuteChangedListener: OnMinuteChangedListener?): WheelMinutePicker {
         this.onMinuteChangedListener = onMinuteChangedListener

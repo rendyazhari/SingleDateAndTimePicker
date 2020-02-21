@@ -7,12 +7,16 @@ import com.github.florent37.singledateandtimepicker.R
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class WheelYearPicker : WheelPicker<String?> {
     private var simpleDateFormat: SimpleDateFormat? = null
     @JvmField
     var minYear = 0
     protected var maximumYear = 0
     private var onYearSelectedListener: OnYearSelectedListener? = null
+
+    val currentYear: Int
+        get() = convertItemToYear(super.currentItemPosition)
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -26,9 +30,7 @@ class WheelYearPicker : WheelPicker<String?> {
         maximumYear = currentYear + SingleDateAndTimeConstants.MAX_YEAR_DIFF
     }
 
-    override fun initDefault(): String {
-        return todayText
-    }
+    override fun initDefault(): String = todayText
 
     private val todayText: String
         get() = getLocalizedString(R.string.picker_today)
@@ -65,9 +67,6 @@ class WheelYearPicker : WheelPicker<String?> {
     fun setOnYearSelectedListener(onYearSelectedListener: OnYearSelectedListener?) {
         this.onYearSelectedListener = onYearSelectedListener
     }
-
-    val currentYear: Int
-        get() = convertItemToYear(super.currentItemPosition)
 
     private fun convertItemToYear(itemPosition: Int): Int = minYear + itemPosition
 

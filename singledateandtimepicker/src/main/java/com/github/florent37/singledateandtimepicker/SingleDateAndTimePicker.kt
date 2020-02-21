@@ -32,6 +32,32 @@ class SingleDateAndTimePicker @JvmOverloads constructor(context: Context, attrs:
     private var displayMinutes = true
     private var displayHours = true
     private var isAmPm: Boolean
+
+    init {
+        defaultDate = Date()
+        isAmPm = !DateFormat.is24HourFormat(context)
+        DateHelper.timeZone = Calendar.getInstance().timeZone
+        View.inflate(context, R.layout.single_day_picker, this)
+        yearsPicker = findViewById(R.id.yearPicker)
+        monthPicker = findViewById(R.id.monthPicker)
+        daysOfMonthPicker = findViewById(R.id.daysOfMonthPicker)
+        daysPicker = findViewById(R.id.daysPicker)
+        minutesPicker = findViewById(R.id.minutesPicker)
+        hoursPicker = findViewById(R.id.hoursPicker)
+        amPmPicker = findViewById(R.id.amPmPicker)
+        dtSelector = findViewById(R.id.dtSelector)
+        pickers.addAll(listOf(
+            daysPicker,
+            minutesPicker,
+            hoursPicker,
+            amPmPicker,
+            daysOfMonthPicker,
+            monthPicker,
+            yearsPicker
+        ))
+        initClass(context, attrs)
+    }
+    
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
@@ -479,30 +505,5 @@ class SingleDateAndTimePicker @JvmOverloads constructor(context: Context, attrs:
         private const val PM_HOUR_ADDITION = 12
         private val FORMAT_24_HOUR: CharSequence = "EEE d MMM H:mm"
         private val FORMAT_12_HOUR: CharSequence = "EEE d MMM h:mm a"
-    }
-
-    init {
-        defaultDate = Date()
-        isAmPm = !DateFormat.is24HourFormat(context)
-        DateHelper.timeZone = Calendar.getInstance().timeZone
-        View.inflate(context, R.layout.single_day_picker, this)
-        yearsPicker = findViewById(R.id.yearPicker)
-        monthPicker = findViewById(R.id.monthPicker)
-        daysOfMonthPicker = findViewById(R.id.daysOfMonthPicker)
-        daysPicker = findViewById(R.id.daysPicker)
-        minutesPicker = findViewById(R.id.minutesPicker)
-        hoursPicker = findViewById(R.id.hoursPicker)
-        amPmPicker = findViewById(R.id.amPmPicker)
-        dtSelector = findViewById(R.id.dtSelector)
-        pickers.addAll(listOf(
-                daysPicker,
-                minutesPicker,
-                hoursPicker,
-                amPmPicker,
-                daysOfMonthPicker,
-                monthPicker,
-                yearsPicker
-        ))
-        initClass(context, attrs)
     }
 }
