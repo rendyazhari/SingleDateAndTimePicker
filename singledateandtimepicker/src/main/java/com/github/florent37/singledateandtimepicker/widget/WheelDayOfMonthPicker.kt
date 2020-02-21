@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import com.github.florent37.singledateandtimepicker.DateHelper
 import java.util.*
 
-class WheelDayOfMonthPicker @JvmOverloads constructor(context: Context?, attrs: AttributeSet? = null) : WheelPicker<String?>(context, attrs) {
+class WheelDayOfMonthPicker @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : WheelPicker<String?>(context, attrs) {
     var daysInMonth = 0
     private var selectedListener: DayOfMonthSelectedListener? = null
     private var finishedLoopListener: FinishedLoopListener? = null

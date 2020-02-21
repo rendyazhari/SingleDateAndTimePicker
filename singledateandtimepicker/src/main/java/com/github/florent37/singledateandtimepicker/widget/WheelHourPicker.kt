@@ -14,8 +14,8 @@ class WheelHourPicker : WheelPicker<String?> {
     private var finishedLoopListener: FinishedLoopListener? = null
     private var hourChangedListener: OnHourChangedListener? = null
 
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     override fun initClass() {
         isAmPm = false

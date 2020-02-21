@@ -14,8 +14,8 @@ class WheelYearPicker : WheelPicker<String?> {
     protected var maximumYear = 0
     private var onYearSelectedListener: OnYearSelectedListener? = null
 
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     override fun initClass() {
         simpleDateFormat = SimpleDateFormat("yyyy", currentLocale)
@@ -67,7 +67,7 @@ class WheelYearPicker : WheelPicker<String?> {
     }
 
     val currentYear: Int
-        get() = convertItemToYear(super.getCurrentItemPosition())
+        get() = convertItemToYear(super.currentItemPosition)
 
     private fun convertItemToYear(itemPosition: Int): Int = minYear + itemPosition
 

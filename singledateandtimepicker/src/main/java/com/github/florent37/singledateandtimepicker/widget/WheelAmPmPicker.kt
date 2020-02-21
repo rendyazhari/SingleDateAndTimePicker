@@ -9,8 +9,8 @@ import java.util.*
 class WheelAmPmPicker : WheelPicker<String?> {
     private var amPmListener: AmPmListener? = null
 
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     override fun initClass() {}
     override fun initDefault(): String =
@@ -45,9 +45,11 @@ class WheelAmPmPicker : WheelPicker<String?> {
         amPmListener?.run { onAmPmChanged(this@WheelAmPmPicker, isAm) }
     }
 
-    override fun setCyclic(isCyclic: Boolean) {
-        super.setCyclic(false)
-    }
+    override var isCyclic: Boolean
+        get() = super.isCyclic
+        set(value) {
+            super.isCyclic = false
+        }
 
     fun isAmPosition(position: Int): Boolean = position == INDEX_AM
 

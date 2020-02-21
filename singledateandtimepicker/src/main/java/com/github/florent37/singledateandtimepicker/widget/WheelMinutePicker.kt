@@ -10,8 +10,8 @@ class WheelMinutePicker : WheelPicker<String?> {
     private var onMinuteChangedListener: OnMinuteChangedListener? = null
     private var onFinishedLoopListener: OnFinishedLoopListener? = null
 
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     override fun initClass() {
         stepMinutes = SingleDateAndTimeConstants.STEP_MINUTES_DEFAULT

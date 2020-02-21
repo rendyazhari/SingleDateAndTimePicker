@@ -6,7 +6,7 @@ import com.github.florent37.singledateandtimepicker.DateHelper
 import java.text.SimpleDateFormat
 import java.util.*
 
-class WheelMonthPicker @JvmOverloads constructor(context: Context?, attrs: AttributeSet? = null) : WheelPicker<String?>(context, attrs) {
+class WheelMonthPicker @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : WheelPicker<String?>(context, attrs) {
     private var monthLastScrollPosition = 0
     private var selectedListener: MonthSelectedListener? = null
     private var displayMonthNumbers = false

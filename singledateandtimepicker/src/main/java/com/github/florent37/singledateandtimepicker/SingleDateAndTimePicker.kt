@@ -266,7 +266,7 @@ class SingleDateAndTimePicker @JvmOverloads constructor(context: Context, attrs:
         setMinYear()
     }
 
-    fun setCustomLocale(locale: Locale?) {
+    fun setCustomLocale(locale: Locale) {
         for (p in pickers) {
             p.setCustomLocale(locale)
             p.updateAdapter()

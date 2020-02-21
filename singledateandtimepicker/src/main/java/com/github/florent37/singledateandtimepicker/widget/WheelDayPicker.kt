@@ -14,8 +14,8 @@ class WheelDayPicker : WheelPicker<String?> {
     private var customDateFormat: SimpleDateFormat? = null
     private var onDaySelectedListener: OnDaySelectedListener? = null
 
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     override fun initClass() {
         simpleDateFormat = SimpleDateFormat(DAY_FORMAT_PATTERN, currentLocale)
@@ -78,7 +78,7 @@ class WheelDayPicker : WheelPicker<String?> {
     }
 
     val currentDate: Date?
-        get() = convertItemToDate(super.getCurrentItemPosition())
+        get() = convertItemToDate(super.currentItemPosition)
 
     private val dateFormat: SimpleDateFormat?
         private get() = if (customDateFormat != null) {
