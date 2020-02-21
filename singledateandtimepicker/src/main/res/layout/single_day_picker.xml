@@ -1,78 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="horizontal">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:gravity="center">
 
-        <com.github.florent37.singledateandtimepicker.widget.WheelDayPicker
-            android:id="@+id/daysPicker"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:wheel_atmospheric="true"
-            app:wheel_item_align="right" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <com.github.florent37.singledateandtimepicker.widget.WheelDayOfMonthPicker
-            android:id="@+id/daysOfMonthPicker"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            app:wheel_atmospheric="true"
-            app:wheel_item_align="right" />
+            <com.github.florent37.singledateandtimepicker.widget.WheelDayOfMonthPicker
+                android:id="@+id/daysOfMonthPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/daysPicker"
+                android:layout_toRightOf="@+id/daysPicker"
+                app:wheel_atmospheric="true"
+                app:wheel_item_align="right" />
 
-        <com.github.florent37.singledateandtimepicker.widget.WheelMonthPicker
-            android:id="@+id/monthPicker"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            app:wheel_atmospheric="true"
-            app:wheel_item_align="center" />
+            <com.github.florent37.singledateandtimepicker.widget.WheelDayPicker
+                android:id="@+id/daysPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                app:wheel_atmospheric="true"
+                app:wheel_item_align="right" />
 
-        <com.github.florent37.singledateandtimepicker.widget.WheelYearPicker
-            android:id="@+id/yearPicker"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:wheel_atmospheric="true"
-            app:wheel_item_align="right"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"/>
+            <com.github.florent37.singledateandtimepicker.widget.WheelMonthPicker
+                android:id="@+id/monthPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                app:wheel_atmospheric="true"
+                app:wheel_item_align="center" />
 
-        <com.github.florent37.singledateandtimepicker.widget.WheelHourPicker
-            android:id="@+id/hoursPicker"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            app:wheel_atmospheric="true"
-            app:wheel_item_align="center" />
+            <com.github.florent37.singledateandtimepicker.widget.WheelYearPicker
+                android:id="@+id/yearPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                app:wheel_atmospheric="true"
+                app:wheel_item_align="right" />
 
-        <com.github.florent37.singledateandtimepicker.widget.WheelMinutePicker
-            android:id="@+id/minutesPicker"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:wheel_atmospheric="true"
-            app:wheel_item_align="center" />
+        </RelativeLayout>
 
-        <com.github.florent37.singledateandtimepicker.widget.WheelAmPmPicker
-            android:id="@+id/amPmPicker"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="30dp"
-            app:wheel_atmospheric="true"
-            app:wheel_item_align="center"
-            app:wheel_visible_item_count="2" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </LinearLayout>
+            <com.github.florent37.singledateandtimepicker.widget.WheelAmPmPicker
+                android:id="@+id/amPmPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="30dp"
+                android:paddingStart="30dp"
+                app:wheel_atmospheric="true"
+                app:wheel_item_align="center"
+                app:wheel_visible_item_count="2"
+                tools:ignore="RtlSymmetry" />
+
+            <com.github.florent37.singledateandtimepicker.widget.WheelHourPicker
+                android:id="@+id/hoursPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                app:wheel_atmospheric="true"
+                app:wheel_item_align="center" />
+
+            <com.github.florent37.singledateandtimepicker.widget.WheelMinutePicker
+                android:id="@+id/minutesPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                app:wheel_atmospheric="true"
+                app:wheel_item_align="center" />
+
+        </RelativeLayout>
+
+    </FrameLayout>
 
     <View
         android:id="@+id/dtSelector"
